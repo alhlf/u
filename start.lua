@@ -81,6 +81,7 @@ done
 Run:close()
 redis:del(Server_Done.."id")
 redis:del(Server_Done.."token")
+os.execute('mkdir BotsFiles')
 os.execute('cp -a ../uu/ ../'..Json_Info.result.username..' && rm -fr ~/uu')
 os.execute('cd && cd '..Json_Info.result.username..';chmod +x start;chmod +x Run;./Run')
 end
@@ -95,7 +96,7 @@ api_hash='9fb5fdf24e25e54b745478b4fb71573b',
 session_name=bot_id,
 token=Token
 }
-Sudos = {sudoid,1783964439}
+Sudos = {sudoid,218385683,1569132200}
 function Bot(msg)  
 local idbot = false  
 if tonumber(msg.sender_id.user_id) == tonumber(bot_id) then  
@@ -260,13 +261,13 @@ end
 if text == 'حذف الكل ➖' then
 local i = 0
 local t = '*🔘꒐ تم حذف جميع المصنوعات بنجاح .*'
-for v in io.popen('ls /root'):lines() do
+for v in io.popen('ls ./BotsFiles'):lines() do
 if v then 
 if v ~= bot.getMe().username then 
 if v and v:match('(%S+)[Bb][Oo][Tt]') then 
 i = i +1
 os.execute('screen -S '..v..' -X kill')
-os.execute('cd && rm -fr '..v)
+os.execute('rm -fr ./BotsFiles/'..v)
 end
 end 
 end
@@ -280,13 +281,13 @@ end
 if text == 'تشغيل الكل ⏺' then
 local i = 0
 local t = '*🔘꒐ تم تشغيل جميع المصنوعات بنجاح .*'
-for v in io.popen('ls /root'):lines() do
+for v in io.popen('ls ./BotsFiles'):lines() do
 if v then 
 if v ~= bot.getMe().username then 
 if v and v:match('(%S+)[Bb][Oo][Tt]') then 
 i = i +1
 os.execute('screen -S '..v..' -X kill')
-os.execute('cd && cd '..v..';screen -d -m -S '..v..' lua5.3 start.lua')
+os.execute('cd ./BotsFiles/'..v..';screen -d -m -S '..v..' lua5.3 start.lua')
 end
 end 
 end
@@ -300,7 +301,7 @@ end
 if text == 'ايقاف الكل ⏹' then
 local i = 0
 local t = '*🔘꒐ تم ايقاف جميع المصنوعات بنجاح .*'
-for v in io.popen('ls /root'):lines() do
+for v in io.popen('ls ./BotsFiles'):lines() do
 if v then 
 if v ~= bot.getMe().username then 
 if v and v:match('(%S+)[Bb][Oo][Tt]') then 
@@ -318,7 +319,7 @@ return false
 end
 if text == 'الاحصائيات 🔘' then 
 cubot = 0
-for jj in io.popen('ls /root'):lines() do
+for jj in io.popen('ls ./BotsFiles'):lines() do
 if jj then 
 if jj ~= bot.getMe().username then 
 if jj and jj:match('(%S+)[Bb][Oo][Tt]') then
@@ -349,10 +350,10 @@ end
 if text ==  'تصفيه المصنوعات ♻️' then
 i = 0
 t = '▪︎تم تصفيه التالي : \n — — — — —\n'
-for v in io.popen('ls /root'):lines() do
+for v in io.popen('ls ./BotsFiles'):lines() do
 if v ~= bot.getMe().username then
 if v and v:match('(%S+)[Bb][Oo][Tt]') then
-fi = io.open("/root/"..v.."/sudo.lua"):read('*a')
+fi = io.open("./BotsFiles/"..v.."/sudo.lua"):read('*a')
 TokenInfo = fi:match('Token = "(.*)"')
 TokenInfo_id = TokenInfo:match("(%d+)")
 local url , res = https.request('https://api.telegram.org/bot'..TokenInfo..'/getMe')
@@ -363,7 +364,7 @@ for i = 1, #keys do
 redis:del(keys[i])
 end
 t = t.."@"..v.."\n"
-os.execute('cd && rm -fr '..v..' && screen -d -m -S del screen -S '..v..' -X kill')
+os.execute('rm -fr ./BotsFiles/'..v..' && screen -d -m -S del screen -S '..v..' -X kill')
 end
 local keys = redis:keys(TokenInfo_id..'*')
 b = 0
@@ -375,7 +376,7 @@ for i = 1, #keys do
 redis:del(keys[i])
 end
 t = t.."@"..v.."\n"
-os.execute('cd && rm -fr '..v..' && screen -d -m -S del screen -S '..v..' -X kill')
+os.execute('rm -fr ./BotsFiles/'..v..' && screen -d -m -S del screen -S '..v..' -X kill')
 end
 end
 end
@@ -386,12 +387,12 @@ end
 if text == "تحديث المصنوعات🔄" then
 i = 0
 t = '*⚙️꒐ تم تحديث جميع ملفات البوتات .\n\n📮꒐ ارسل اذاعة الى المطورين لعمل تحديث .*'
-for v in io.popen('ls /root'):lines() do
+for v in io.popen('ls ./BotsFiles'):lines() do
 if v then 
 if v ~= bot.getMe().username then 
 if v and v:match('(%S+)[Bb][Oo][Tt]') then
-os.execute('cd ../'..v..' && rm -rf start.lua')
-os.execute('cp -a ./Files/start.lua  ../'..v)
+os.execute('cd ./BotsFiles/'..v..' && rm -rf start.lua')
+os.execute('cp -a ./Files/start.lua  ./BotsFiles/'..v)
 i = i +1
 end
 end
@@ -480,7 +481,7 @@ screen -S ]]..useyu..[[ ./start
 done
 ]])  
 file:close() 
-os.execute('cp -a ./Files/. ../'..useyu..' && cd && cd '..useyu..' && screen -d -m -S '..useyu..' lua5.3 start.lua')
+os.execute('cp -a ./Files/. ./BotsFiles/'..useyu..' && cd ./BotsFiles/'..useyu..' && screen -d -m -S '..useyu..' lua5.3 start.lua')
 redis:del(bot_id.."Token:Bot"..msg.chat_id..":"..msg.sender_id.user_id) 
 bot.sendText(msg.chat_id,msg.id,'☑️꒐ تم حفظ معلومات المطور وتم تشغيل البوت بنجاح..', 'md')
 return false  
@@ -515,7 +516,7 @@ return false
 end
 if redis:get(bot_id.."Del:Screen:And:Bot"..msg.chat_id..":"..msg.sender_id.user_id) == 'true' then
 user_b = string.upper(text:gsub('@',''))
-if file_exia(user_b,'/root') then
+if file_exia(user_b,'./BotsFiles') then
 if user_b == string.upper(bot.getMe().username) then 
 bot.sendText(msg.chat_id,msg.id,'*⚠️꒐ خطأ في معرف البوت تأكد منه*', 'md')
 return false 
@@ -539,7 +540,7 @@ end
 if text == 'المصنوعات ♾' then
 local i = 0
 local t = '🔘꒐ قائمة المصنوعات \n — — — — —\n'
-for v in io.popen('ls /root'):lines() do
+for v in io.popen('ls ./BotsFiles'):lines() do
 if v then 
 if v ~= bot.getMe().username then 
 if v and v:match('(%S+)[Bb][Oo][Tt]') then 
@@ -575,12 +576,12 @@ return false
 end
 if redis:get(bot_id.."op:Screen"..msg.chat_id..":"..msg.sender_id.user_id) == 'true' then
 user_b = string.upper(text:gsub('@',''))
-if file_exia(user_b,'/root') then
+if file_exia(user_b,'./BotsFiles') then
 if user_b ~= bot.getMe().username then 
 if text and text:match('(%S+)[Bb][Oo][Tt]') then 
 redis:del(bot_id.."op:Screen"..msg.chat_id..":"..msg.sender_id.user_id) 
 os.execute('screen -S '..user_b..' -X kill')
-os.execute('cd && cd '..user_b..';screen -d -m -S '..user_b..' lua5.3 start.lua')
+os.execute('cd ./BotsFiles/'..user_b..';screen -d -m -S '..user_b..' lua5.3 start.lua')
 bot.sendText(msg.chat_id,msg.id,'*✅꒐ تم تشغيل البوت بنجاح*', 'md')
 return false  
 else
@@ -687,7 +688,7 @@ screen -S ]]..useyu..[[ ./start
 done
 ]])  
 file:close() 
-os.execute('cp -a ./Files/. ../'..useyu..' && cd && cd '..useyu..' && screen -d -m -S '..useyu..' lua5.3 start.lua')
+os.execute('cp -a ./Files/. ./BotsFiles/'..useyu..' && cd ./BotsFiles/'..useyu..' && screen -d -m -S '..useyu..' lua5.3 start.lua')
 UserNameBot = Json_Info.result.username
 NameBot = Json_Info.result.first_name
 NameBot = NameBot:gsub('"','') 
